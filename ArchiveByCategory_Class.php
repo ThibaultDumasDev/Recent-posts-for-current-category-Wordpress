@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Recents posts for current category
- * Description: Permet d'afficher les derniers articles de la catégorie en cours de visite
+ * Description: Show last articles for the current category
  * Version: 1.0
  * Author: Thibault Dumas
  */
@@ -10,7 +10,7 @@ class Posts_By_Category extends WP_Widget {
 	
 	private $font_color = 'red';
 	
-	//Configuration globale du widget
+	//Widget global configuration
 	function __construct() {
 		
 		//Réglages propres au widget : nom de classe utilisée dans le css, description du widget dans l'admin.
@@ -24,16 +24,16 @@ class Posts_By_Category extends WP_Widget {
 		parent::__construct('posts_by_category', __('Recents posts for current category'), $widget_args, $control_args);
 	}
 	
-	//Affichage en front-end
+	//Front-end display
 	function widget($args, $instance) {
 		
-		//Récuparation de l'id de la catégorie actuelle.
+		//Get current category ID
 		$categories = get_the_category();
 		$category_id = $categories[0]->cat_ID;
 		$see_thumbnail = $instance['see_thumbnail'] == 'on' ? true : false;
 		$see_home = $instance['see_home'] == 'on' ? true : false;
 		
-		//Si c'est la page d'accueil ou que la catégorie n'est pas trouvée nous n'affichons rien.
+		//If this is home page or current category can't be found, just skip
 		if ((!is_home() & $category_id != null) || $see_home) {
 			echo '<style> 
 					.class_archive_by_category .widget-title{  color:', $instance['font_color'], ' !important;}
@@ -80,7 +80,7 @@ class Posts_By_Category extends WP_Widget {
 		echo $args['after_widget'];
 	}
 	
-	//Traitement des données avant sauvegarde
+	//Data processing, before saving
 	function update($new_instance, $old_instance) {
 		$instance = array();
 		
@@ -101,7 +101,7 @@ class Posts_By_Category extends WP_Widget {
 		return $instance;
 	}
 	
-	//Affichage du formulaire de réglages du widget en back-end
+	//Widget configuration front-end display
 	function form($instance) {
 		$title = !empty($instance['title']) ? $instance['title'] : __('New title', 'text_domain');
 		$nb_posts = !empty($instance['nb_posts']) ? $instance['nb_posts'] : __('3', 'text_domain');
